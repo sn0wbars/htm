@@ -19,14 +19,17 @@ example
 0 0    1 0    0 1    0 0    0 0
 _______
 """
+
+
 def print_fout(fout, h, w, data):
     for i in range(h):
         fout.write(' '.join(map(str, data[i])) + "\n")
     fout.write("\n")
 
+
 def generate_movie(input_name):
     fin = open("./images/" + input_name, "r")
-    fout = open("./images/" + "movie_" + input_name,"w")
+    fout = open("./images/" + "movie_" + input_name, "w")
 
     height, width = map(int, fin.readline().split())
     data = [list(map(int, fin.readline().split())) for i in range(height)]

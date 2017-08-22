@@ -13,9 +13,9 @@ class Point:
     def radd(self, other):
         return Point(self.x + other.x, self.y + other.y)
 
-
+#? default argument is object
 class Node:
-    def __init__(self, point_s = Point(), point_f = Point(), num_groups = 4, sigma2 = 5):
+    def __init__(self, point_s=Point(), point_f=Point(), num_groups=4, sigma2=5):
         self.start_point = point_s    # connection
         self.finish_point = point_f   # area
         self.sigma2 = sigma2          # sigma^2
@@ -25,6 +25,7 @@ class Node:
         self.number_patterns = 0
         self.pattern_matrix = []
 
+        #? Is it necessary to store all of them? Can we guarantee relevance?
         self.Markov_graph = []
         self.normalized_Markov_graph = []
         self.distance_graph = []      # inversely to normalized graph
@@ -35,15 +36,18 @@ class Node:
         self.output = []              # request result
 
     def extract_pattern(self, prev_layer):
+        #? So. is pattern input? -
         pattern = []
         node_matrix = prev_layer.node_matrix
         for i in range(self.start_point.x, self.finish_point.x):
             for j in range(self.start_point.y, self.finish_point.y):
                 cur_line = node_matrix[i][j].get_output()
                 max_value = max(cur_line)
+                #? It can be written easier
                 if max_value > 0:
-                    cur_line = [1 *(cur_line[i] == max_value) for i in range(len(cur_line))]
+                    cur_line = [1 * (cur_line[i] == max_value) for i in range(len(cur_line))]
                 pattern += cur_line[:]
+                #? + Why not? -
                 ##pattern += node_matrix[i][j].get_output()
         return pattern
 
@@ -52,6 +56,7 @@ class Node:
             index = self.number_patterns
             self.pattern_matrix.append(pattern)
             self.number_patterns += 1
+            #? mb use something more sophisticated, like numpy matrices
             for i in range(self.number_patterns - 1):
                 self.Markov_graph[i] += [0]
                 self.normalized_Markov_graph[i] += [0]
